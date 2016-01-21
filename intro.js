@@ -70,7 +70,11 @@
       /* Default hint position */
       hintPosition: 'top-middle',
       /* Hint button label */
-      hintButtonLabel: 'Got it'
+      hintButtonLabel: 'Got it',
+      /* custom intro JS layout */
+      customLayoutHTML: null,
+      /* custom layout content selector. Can be any id, class or element from the custom layout */
+      customLayoutContentSelector: null
     };
   }
 
@@ -492,12 +496,12 @@
         tooltipLayer.style.bottom = (targetOffset.height +  20) + 'px';
         break;
       case 'right':
-        tooltipLayer.style.left = (targetOffset.width + 20) + 'px';
+        tooltipLayer.style.left = (targetOffset.width + 65) + 'px';
         if (targetOffset.top + tooltipOffset.height > windowSize.height) {
           // In this case, right would have fallen below the bottom of the screen.
           // Modify so that the bottom of the tooltip connects with the target
           arrowLayer.className = "introjs-arrow left-bottom";
-          tooltipLayer.style.top = "-" + (tooltipOffset.height - targetOffset.height - 20) + "px";
+          tooltipLayer.style.top = "-" + (tooltipOffset.height - targetOffset.height - 65) + "px";
         } else {
           arrowLayer.className = 'introjs-arrow left';
         }
@@ -510,12 +514,12 @@
         if (targetOffset.top + tooltipOffset.height > windowSize.height) {
           // In this case, left would have fallen below the bottom of the screen.
           // Modify so that the bottom of the tooltip connects with the target
-          tooltipLayer.style.top = "-" + (tooltipOffset.height - targetOffset.height - 20) + "px";
+          tooltipLayer.style.top = "-" + (tooltipOffset.height - targetOffset.height - 65) + "px";
           arrowLayer.className = 'introjs-arrow right-bottom';
         } else {
           arrowLayer.className = 'introjs-arrow right';
         }
-        tooltipLayer.style.right = (targetOffset.width + 20) + 'px';
+        tooltipLayer.style.right = (targetOffset.width + 65) + 'px';
 
         break;
       case 'floating':
@@ -538,7 +542,7 @@
 
         var tooltipLayerStyleRight = 0;
         _checkLeft(targetOffset, tooltipLayerStyleRight, tooltipOffset, tooltipLayer);
-        tooltipLayer.style.top    = (targetOffset.height +  20) + 'px';
+        tooltipLayer.style.top    = (targetOffset.height +  65) + 'px';
         break;
 
       case 'bottom-middle-aligned':
@@ -555,7 +559,7 @@
           tooltipLayer.style.right = null;
           _checkRight(targetOffset, tooltipLayerStyleLeftRight, tooltipOffset, windowSize, tooltipLayer);
         }
-        tooltipLayer.style.top = (targetOffset.height + 20) + 'px';
+        tooltipLayer.style.top = (targetOffset.height + 65) + 'px';
         break;
 
       case 'bottom-left-aligned':
@@ -567,7 +571,7 @@
 
         var tooltipLayerStyleLeft = 0;
         _checkRight(targetOffset, tooltipLayerStyleLeft, tooltipOffset, windowSize, tooltipLayer);
-        tooltipLayer.style.top    = (targetOffset.height +  20) + 'px';
+        tooltipLayer.style.top    = (targetOffset.height +  65) + 'px';
         break;
     }
   }
@@ -801,13 +805,22 @@
       if (self._lastShowElementTimer) {
         clearTimeout(self._lastShowElementTimer);
       }
+
       self._lastShowElementTimer = setTimeout(function() {
         //set current step to the label
         if (oldHelperNumberLayer != null) {
           oldHelperNumberLayer.innerHTML = targetElement.step;
         }
+
         //set current tooltip text
-        oldtooltipLayer.innerHTML = targetElement.intro;
+        if (self._options.customLayoutHTML && self._options.customLayoutContentSelector) {
+          oldtooltipLayer.innerHTML = self._options.customLayout;
+          var wtContent = oldtooltipLayer.querySelector(self._options.customLayoutContentSelector);
+          wtContent.innerHTML = targetElement.intro;
+        } else {
+          oldtooltipLayer.innerHTML = targetElement.intro;
+        }
+
         //set the tooltip position
         oldtooltipContainer.style.display = "block";
         _placeTooltip.call(self, targetElement.element, oldtooltipContainer, oldArrowLayer, oldHelperNumberLayer);
@@ -856,7 +869,16 @@
       arrowLayer.className = 'introjs-arrow';
 
       tooltipTextLayer.className = 'introjs-tooltiptext';
-      tooltipTextLayer.innerHTML = targetElement.intro;
+
+      if (this._options.customLayoutHTML && this._options.customLayoutContentSelector) {
+        tooltipTextLayer.innerHTML = this._options.customLayout;
+        var wtContent = tooltipTextLayer.querySelector(this._options.customLayoutContentSelector);
+        wtContent.innerHTML = targetElement.intro;
+      } else {
+        tooltipTextLayer.innerHTML = targetElement.intro;
+      }
+
+      wtContent.innerHTML = targetElement.intro;
 
       bulletsLayer.className = 'introjs-bullets';
 
@@ -897,7 +919,7 @@
 
       progressLayer.appendChild(progressBar);
 
-      buttonsLayer.className = 'introjs-tooltipbuttons';
+      buttonsLayer.className = 'introjs-tooltipbuttons clearfix';
       if (this._options.showButtons === false) {
         buttonsLayer.style.display = 'none';
       }
@@ -911,7 +933,9 @@
       if (this._options.showStepNumbers == true) {
         var helperNumberLayer = document.createElement('span');
         helperNumberLayer.className = 'introjs-helperNumberLayer';
-        helperNumberLayer.innerHTML = targetElement.step;
+
+        //I've commented this line to remove the numberLayer increment
+        // helperNumberLayer.innerHTML = targetElement.step;
         referenceLayer.appendChild(helperNumberLayer);
       }
 
@@ -985,11 +1009,11 @@
     if (this._currentStep == 0 && this._introItems.length > 1) {
       prevTooltipButton.className = 'introjs-button introjs-prevbutton introjs-disabled';
       prevTooltipButton.tabIndex = '-1';
-      nextTooltipButton.className = 'introjs-button introjs-nextbutton';
+      nextTooltipButton.className = 'introjs-button introjs-nextbutton introjs-centered';
       skipTooltipButton.innerHTML = this._options.skipLabel;
     } else if (this._introItems.length - 1 == this._currentStep || this._introItems.length == 1) {
       skipTooltipButton.innerHTML = this._options.doneLabel;
-      prevTooltipButton.className = 'introjs-button introjs-prevbutton';
+      prevTooltipButton.className = 'introjs-button introjs-prevbutton introjs-centered';
       nextTooltipButton.className = 'introjs-button introjs-nextbutton introjs-disabled';
       nextTooltipButton.tabIndex = '-1';
     } else {
