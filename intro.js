@@ -814,7 +814,7 @@
 
         //set current tooltip text
         if (self._options.customLayoutHTML && self._options.customLayoutContentSelector) {
-          oldtooltipLayer.innerHTML = self._options.customLayout;
+          oldtooltipLayer.innerHTML = self._options.customLayoutHTML;
           var wtContent = oldtooltipLayer.querySelector(self._options.customLayoutContentSelector);
           wtContent.innerHTML = targetElement.intro;
         } else {
@@ -871,7 +871,7 @@
       tooltipTextLayer.className = 'introjs-tooltiptext';
 
       if (this._options.customLayoutHTML && this._options.customLayoutContentSelector) {
-        tooltipTextLayer.innerHTML = this._options.customLayout;
+        tooltipTextLayer.innerHTML = this._options.customLayoutHTML;
         var wtContent = tooltipTextLayer.querySelector(this._options.customLayoutContentSelector);
         wtContent.innerHTML = targetElement.intro;
       } else {
