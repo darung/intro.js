@@ -1,5 +1,5 @@
 /**
- * Intro.js v2.0.3
+ * Intro.js v2.0.4
  * https://github.com/usablica/intro.js
  * MIT licensed
  *
@@ -19,7 +19,7 @@
   }
 }(this, function(exports) {
   //Default config/variables
-  var VERSION = '2.0.3';
+  var VERSION = '2.0.4';
 
   /**
    * IntroJs main class
@@ -771,7 +771,8 @@
         oldtooltipContainer = oldReferenceLayer.querySelector('.introjs-tooltip'),
         skipTooltipButton = oldReferenceLayer.querySelector('.introjs-skipbutton'),
         prevTooltipButton = oldReferenceLayer.querySelector('.introjs-prevbutton'),
-        nextTooltipButton = oldReferenceLayer.querySelector('.introjs-nextbutton');
+        nextTooltipButton = oldReferenceLayer.querySelector('.introjs-nextbutton'),
+        doneTooltipButton = oldReferenceLayer.querySelector('.introjs-donebutton');
 
       //update or reset the helper highlight class
       oldHelperLayer.className = highlightClass;
@@ -968,6 +969,12 @@
       prevTooltipButton.href = 'javascript:void(0);';
       prevTooltipButton.innerHTML = this._options.prevLabel;
 
+      //in order to prevent displaying next/previous button always
+      if (this._introItems.length > 1) {
+        buttonsLayer.appendChild(prevTooltipButton);
+        buttonsLayer.appendChild(nextTooltipButton);
+      }
+
       //skip button
       var skipTooltipButton = document.createElement('a');
       skipTooltipButton.className = 'introjs-button introjs-skipbutton';
@@ -987,12 +994,6 @@
       };
 
       buttonsLayer.appendChild(skipTooltipButton);
-
-      //in order to prevent displaying next/previous button always
-      if (this._introItems.length > 1) {
-        buttonsLayer.appendChild(prevTooltipButton);
-        buttonsLayer.appendChild(nextTooltipButton);
-      }
 
       //done button
       var doneTooltipButton = document.createElement('a');
@@ -1014,40 +1015,39 @@
 
       buttonsLayer.appendChild(doneTooltipButton);
 
+
       tooltipLayer.appendChild(buttonsLayer);
-
-
-
-      //disable interaction
-      if (this._options.disableInteraction === true) {
-        _disableInteraction.call(self);
-      }
-
-      prevTooltipButton.removeAttribute('tabIndex');
-      nextTooltipButton.removeAttribute('tabIndex');
-
-      if (this._currentStep == 0 && this._introItems.length > 1) {
-        prevTooltipButton.className = 'introjs-button introjs-prevbutton introjs-disabled';
-        prevTooltipButton.tabIndex = '-1';
-        nextTooltipButton.className = 'introjs-button introjs-nextbutton introjs-centered';
-        skipTooltipButton.innerHTML = this._options.skipLabel;
-        doneTooltipButton.className = 'introjs-button introjs-donebutton introjs-disabled';
-      } else if (this._introItems.length - 1 == this._currentStep || this._introItems.length == 1) {
-        skipTooltipButton.innerHTML = this._options.doneLabel;
-        doneTooltipButton.className = 'introjs-button introjs-donebutton';
-        prevTooltipButton.className = 'introjs-button introjs-prevbutton';
-        nextTooltipButton.className = 'introjs-button introjs-nextbutton introjs-disabled';
-        nextTooltipButton.tabIndex = '-1';
-      } else {
-        prevTooltipButton.className = 'introjs-button introjs-prevbutton';
-        nextTooltipButton.className = 'introjs-button introjs-nextbutton';
-        skipTooltipButton.innerHTML = this._options.skipLabel;
-        doneTooltipButton.className = 'introjs-button introjs-donebutton introjs-disabled';
-      }
 
       //set proper position
       _placeTooltip.call(self, targetElement.element, tooltipLayer, arrowLayer, helperNumberLayer);
     }
+    //disable interaction
+    if (this._options.disableInteraction === true) {
+      _disableInteraction.call(self);
+    }
+
+    prevTooltipButton.removeAttribute('tabIndex');
+    nextTooltipButton.removeAttribute('tabIndex');
+
+    if (this._currentStep == 0 && this._introItems.length > 1) {
+      prevTooltipButton.className = 'introjs-button introjs-prevbutton introjs-disabled';
+      prevTooltipButton.tabIndex = '-1';
+      nextTooltipButton.className = 'introjs-button introjs-nextbutton introjs-centered';
+      skipTooltipButton.innerHTML = this._options.skipLabel;
+      doneTooltipButton.className = 'introjs-button introjs-donebutton introjs-disabled';
+    } else if (this._introItems.length - 1 == this._currentStep || this._introItems.length == 1) {
+      skipTooltipButton.innerHTML = this._options.doneLabel;
+      doneTooltipButton.className = 'introjs-button introjs-donebutton';
+      prevTooltipButton.className = 'introjs-button introjs-prevbutton';
+      nextTooltipButton.className = 'introjs-button introjs-nextbutton introjs-disabled';
+      nextTooltipButton.tabIndex = '-1';
+    } else {
+      prevTooltipButton.className = 'introjs-button introjs-prevbutton';
+      nextTooltipButton.className = 'introjs-button introjs-nextbutton';
+      skipTooltipButton.innerHTML = this._options.skipLabel;
+      doneTooltipButton.className = 'introjs-button introjs-donebutton introjs-disabled';
+    }
+
 
     //Set focus on "next" button, so that hitting Enter always moves you onto the next step
     nextTooltipButton.focus();
