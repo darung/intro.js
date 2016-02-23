@@ -33,6 +33,7 @@
     this._options = {
       /* Next button label in tooltip box */
       nextLabel: 'Next &rarr;',
+      showNext: true,
       /* Previous button label in tooltip box */
       prevLabel: '&larr; Back',
       /* Skip button label in tooltip box */
@@ -957,6 +958,10 @@
       nextTooltipButton.href = 'javascript:void(0);';
       nextTooltipButton.innerHTML = this._options.nextLabel;
 
+      if (this._options.showNext === false) {
+        nextTooltipButton.style.display = 'none';
+      }
+
       //previous button
       var prevTooltipButton = document.createElement('a');
 
@@ -969,6 +974,10 @@
       prevTooltipButton.href = 'javascript:void(0);';
       prevTooltipButton.innerHTML = this._options.prevLabel;
 
+      if (this._options.showPrev === false) {
+        prevTooltipButton.style.display = 'none';
+      }
+
       //in order to prevent displaying next/previous button always
       if (this._introItems.length > 1) {
         buttonsLayer.appendChild(prevTooltipButton);
@@ -980,6 +989,10 @@
       skipTooltipButton.className = 'introjs-button introjs-skipbutton';
       skipTooltipButton.href = 'javascript:void(0);';
       skipTooltipButton.innerHTML = this._options.skipLabel;
+
+      if (this._options.showSkip === false) {
+        skipTooltipButton.style.display = 'none';
+      }
 
       skipTooltipButton.onclick = function() {
         if (self._introItems.length - 1 == self._currentStep && typeof(self._introCompleteCallback) === 'function') {
@@ -1014,7 +1027,7 @@
       };
 
       buttonsLayer.appendChild(doneTooltipButton);
-
+      buttonsLayer.appendChild(bulletsLayer);
 
       tooltipLayer.appendChild(buttonsLayer);
 
