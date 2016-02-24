@@ -499,12 +499,12 @@
         tooltipLayer.style.bottom = (targetOffset.height + 20) + 'px';
         break;
       case 'right':
-        tooltipLayer.style.left = (targetOffset.width + 65) + 'px';
+        tooltipLayer.style.left = (targetOffset.width + 20) + 'px';
         if (targetOffset.top + tooltipOffset.height > windowSize.height) {
           // In this case, right would have fallen below the bottom of the screen.
           // Modify so that the bottom of the tooltip connects with the target
           arrowLayer.className = "introjs-arrow left-bottom";
-          tooltipLayer.style.top = "-" + (tooltipOffset.height - targetOffset.height - 65) + "px";
+          tooltipLayer.style.top = "-" + (tooltipOffset.height - targetOffset.height - 20) + "px";
         } else {
           arrowLayer.className = 'introjs-arrow left';
         }
@@ -517,12 +517,12 @@
         if (targetOffset.top + tooltipOffset.height > windowSize.height) {
           // In this case, left would have fallen below the bottom of the screen.
           // Modify so that the bottom of the tooltip connects with the target
-          tooltipLayer.style.top = "-" + (tooltipOffset.height - targetOffset.height - 65) + "px";
+          tooltipLayer.style.top = "-" + (tooltipOffset.height - targetOffset.height - 20) + "px";
           arrowLayer.className = 'introjs-arrow right-bottom';
         } else {
           arrowLayer.className = 'introjs-arrow right';
         }
-        tooltipLayer.style.right = (targetOffset.width + 65) + 'px';
+        tooltipLayer.style.right = (targetOffset.width + 20) + 'px';
 
         break;
       case 'floating':
@@ -545,7 +545,7 @@
 
         var tooltipLayerStyleRight = 0;
         _checkLeft(targetOffset, tooltipLayerStyleRight, tooltipOffset, tooltipLayer);
-        tooltipLayer.style.top = (targetOffset.height + 65) + 'px';
+        tooltipLayer.style.top = (targetOffset.height + 20) + 'px';
         break;
 
       case 'bottom-middle-aligned':
@@ -562,7 +562,7 @@
           tooltipLayer.style.right = null;
           _checkRight(targetOffset, tooltipLayerStyleLeftRight, tooltipOffset, windowSize, tooltipLayer);
         }
-        tooltipLayer.style.top = (targetOffset.height + 65) + 'px';
+        tooltipLayer.style.top = (targetOffset.height + 20) + 'px';
         break;
 
       case 'bottom-left-aligned':
@@ -574,7 +574,7 @@
 
         var tooltipLayerStyleLeft = 0;
         _checkRight(targetOffset, tooltipLayerStyleLeft, tooltipOffset, windowSize, tooltipLayer);
-        tooltipLayer.style.top = (targetOffset.height + 65) + 'px';
+        tooltipLayer.style.top = (targetOffset.height + 20) + 'px';
         break;
     }
   }
